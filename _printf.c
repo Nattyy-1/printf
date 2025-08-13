@@ -31,8 +31,10 @@ int _printf(const char *format, ...)
 			continue;
 		} else
 		{
+			if (format[i + 1] == '\0')
+				return (-1);
 
-			handle_specifier(format[i + 1], args, &count);
+			handle_specifier(format[i + 1], &args, &count);
 			i += 2;
 		}
 	}
