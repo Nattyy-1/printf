@@ -33,6 +33,9 @@ void handle_specifier(char c, va_list *args, int *count)
 	} else if (c == 'd' || c == 'i')
 	{
 		di_handler(va_arg(*args, int), count);
+	} else if (c == 'b')
+	{
+		b_handler(va_arg(*args, unsigned int), count);
 	} else
 	{
 		write(1, "%", 1);
