@@ -30,5 +30,10 @@ void handle_specifier(char c, va_list *args, int *count)
 			s = "(null)";
 		write(1, s, strlen(s));
 		(*count) += strlen(s);
+	} else
+	{
+		write(1, "%", 1);
+		write(1, &c, 1);
+		(*count) += 2;
 	}
 }

@@ -4,6 +4,6 @@
 #include <stdarg.h>
 
 int _printf(const char *format, ...);
-void handle_specifier(char c, va_list args, int *count);
+void handle_specifier(char c, va_list *args, int *count);
 
 #endif
