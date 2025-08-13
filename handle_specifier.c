@@ -45,6 +45,9 @@ void handle_specifier(char c, va_list *args, int *count)
 	} else if (c == 'x')
 	{
 		x_handler(va_arg(*args, unsigned int), count);
+	} else if (c == 'X')
+	{
+		X_handler(va_arg(*args, unsigned int), count);
 	} else
 	{
 		write(1, "%", 1);
