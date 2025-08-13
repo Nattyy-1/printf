@@ -9,5 +9,6 @@ void di_handler(int n, int *count);
 void b_handler(unsigned int n, int *count);
 void u_handler(unsigned int n, int *count);
 void o_handler(unsigned int n, int *count);
+void x_handler(unsigned int n, int *count);
 
 #endif
