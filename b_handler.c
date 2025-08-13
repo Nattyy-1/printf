@@ -14,6 +14,13 @@ void b_handler(unsigned int n, int *count)
 	int tracker = 0;
 	int i = 0;
 	char *buff;
+	
+	if (n == 0)
+	{
+		write(1, "0", 1);
+		(*count)++;
+		return;
+	}
 
 	temp = n;
 	while (temp > 0)
