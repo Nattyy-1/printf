@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "main.h"
 
 /**
@@ -9,7 +10,7 @@ void di_handler(int n, int *count)
 {
 	char c;
 	int divisor = 1;
-	int temp;
+	unsigned int temp;
 	unsigned int num;
 
 	if (n < 0)
@@ -17,7 +18,7 @@ void di_handler(int n, int *count)
 		write(1, "-", 1);
 		(*count)++;
 	}
-	num = (n < 0) ? -((unsigned int)n) : n;
+	num = (n < 0) ? -((unsigned int)n) : (unsigned int)n;
 
 	temp = num;
 	while (temp >= 10)
@@ -27,7 +28,7 @@ void di_handler(int n, int *count)
 	}
 
 	temp = num;
-	while (divisor > 1)
+	while (divisor >= 1)
 	{
 		c = temp / divisor + '0';
 		write(1, &c, 1);
