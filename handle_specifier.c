@@ -30,6 +30,9 @@ void handle_specifier(char c, va_list *args, int *count)
 			s = "(null)";
 		write(1, s, strlen(s));
 		(*count) += strlen(s);
+	} else if (c == 'd' || c == 'i')
+	{
+		di_handler(va_arg(*args, int), count);
 	} else
 	{
 		write(1, "%", 1);
