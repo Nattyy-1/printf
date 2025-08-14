@@ -9,44 +9,25 @@
  */
 void handle_specifier(char c, va_list *args, int *count)
 {
-	char *s;
-	char temp;
-
 	if (c == 'c')
 	{
-		temp = (char)va_arg(*args, int);
-		write(1, &temp, 1);
-		(*count)++;
+		c_handler((char)va_arg(*args, int), count);
+		return;
 	} else if (c == '%')
 	{
-		write(1, "%", 1);
-		(*count)++;
+		percent_handler(count);
+		return;
 	} else if (c == 's')
 	{
-		s = va_arg(*args, char *);
-		if (s == NULL)
-			s = "(null)";
-		write(1, s, strlen(s));
-		(*count) += strlen(s);
+		s_handler(va_arg(*args, char *), count);
+		return;
 	} else if (c == 'd' || c == 'i')
 	{
 		di_handler(va_arg(*args, int), count);
-	} else if (c == 'b')
-	{
-		unsigned_handler(va_arg(*args, unsigned int), count, 2, 'b');
-	} else if (c == 'u')
-	{
-		unsigned_handler(va_arg(*args, unsigned int), count, 10, 'u');
-	} else if (c == 'o')
-	{
-		unsigned_handler(va_arg(*args, unsigned int), count, 8, 'o');
-	} else if (c == 'x')
-	{
-		unsigned_handler(va_arg(*args, unsigned int), count, 16, 'x');
-	} else if (c == 'X')
-	{
-		unsigned_handler(va_arg(*args, unsigned int), count, 16, 'X');
-	} else
+		return;
+	}
+
+	if (!(unsigned_loop(c, args, count)))
 	{
 		write(1, "%", 1);
 		write(1, &c, 1);
