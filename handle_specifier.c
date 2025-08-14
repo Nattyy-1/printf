@@ -6,31 +6,32 @@
  * @c: the format specifier character
  * @args: the list of arguments that will be processed
  * @count: keeps track of the printed characters so far
+ * @buffer: the buffer to hold the characters being printed
+ * @j: tracks the fullness of the buffer
  */
-void handle_specifier(char c, va_list *args, int *count)
+void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j)
 {
 	if (c == 'c')
 	{
-		c_handler((char)va_arg(*args, int), count);
+		buffer_insert((char)va_arg(*args, int), count, buffer, j);
 		return;
 	} else if (c == '%')
 	{
-		percent_handler(count);
+		percent_handler(count, buffer, j);
 		return;
 	} else if (c == 's')
 	{
-		s_handler(va_arg(*args, char *), count);
+		s_handler(va_arg(*args, char *), count, buffer, j);
 		return;
 	} else if (c == 'd' || c == 'i')
 	{
-		di_handler(va_arg(*args, int), count);
+		di_handler(va_arg(*args, int), count, buffer, j);
 		return;
 	}
 
-	if (!(unsigned_loop(c, args, count)))
+	if (!(unsigned_loop(c, args, count, buffer, j)))
 	{
-		write(1, "%", 1);
-		write(1, &c, 1);
-		(*count) += 2;
+		buffer_insert('%', count, buffer, j);
+		buffer_insert(c, count, buffer, j);
 	}
 }

@@ -9,9 +9,10 @@
  */
 int _printf(const char *format, ...)
 {
-	int i = 0;
+	int i = 0, j = 0;
 	int count = 0;
 	va_list args;
+	char buffer[BUFFER_SIZE];
 
 	if (format == NULL)
 		return (-1);
@@ -22,20 +23,24 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			write(1, &format[i], 1);
-			count++;
+			buffer_insert(format[i], &count, buffer, &j);
 			i++;
 			continue;
 		} else
 		{
 			if (format[i + 1] == '\0')
+			{
+				write(1, buffer, j);
+				va_end(args);
 				return (-1);
+			}
 
-			handle_specifier(format[i + 1], &args, &count);
+			handle_specifier(format[i + 1], &args, &count, buffer, &j);
 			i += 2;
 		}
 	}
 
+	write(1, buffer, j);
 	va_end(args);
 	return (count);
 }

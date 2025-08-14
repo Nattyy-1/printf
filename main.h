@@ -1,5 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
+#define BUFFER_SIZE 1024
 
 #include <stdarg.h>
 #include <unistd.h>
@@ -16,18 +17,20 @@
  */
 typedef struct spec_handler
 {
-	void (*func)(unsigned int, int *, int, char);
+	void (*func)(unsigned int, int *, int, char, char *, int *);
 	int base;
 	char spec;
 } spec_handler_t;
 
 int _printf(const char *format, ...);
-void handle_specifier(char c, va_list *args, int *count);
-void di_handler(int n, int *count);
-void unsigned_handler(unsigned int n, int *count, int base, char specifier);
-void c_handler(char c, int *count);
-void percent_handler(int *count);
-void s_handler(char *s, int *count);
-int unsigned_loop(char c, va_list *args, int *count);
+void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j);
+void di_handler(int n, int *count, char *buffer, int *j);
+void unsigned_handler(unsigned int n, int *count, int base, char specifier,
+		      char *buffer, int *j);
+void buffer_insert(char c, int *count, char *buffer, int *j);
+void percent_handler(int *count, char *buffer, int *j);
+void s_handler(char *s, int *count, char *buffer, int *j);
+int unsigned_loop(char c, va_list *args, int *count, char *buffer, int *j);
+void flush_full_buff(char *buffer, int *j);
 
 #endif

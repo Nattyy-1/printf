@@ -2,12 +2,15 @@
 
 /**
  * unsigned_handler - handlers the specifiers b, o, x, X, u
- * @n: the number that needs to be printed
+ * @n: the number that needs to be stored
  * @count: the variable that keeps count of the printed chars
  * @base: the base that is used to convert the number
  * @specifier: the specific specifier to choose lookup table
+ * @buffer: holds the characters in a buffer to minimize write call
+ * @j: tracks fullness of the buffer
  */
-void unsigned_handler(unsigned int n, int *count, int base, char specifier)
+void unsigned_handler(unsigned int n, int *count, int base, char specifier,
+		      char *buffer, int *j)
 {
 	int i = 0;
 	char buff[32];
@@ -16,8 +19,7 @@ void unsigned_handler(unsigned int n, int *count, int base, char specifier)
 
 	if (n == 0)
 	{
-		write(1, "0", 1);
-		(*count)++;
+		buffer_insert('0', count, buffer, j);
 		return;
 	}
 
@@ -36,7 +38,6 @@ void unsigned_handler(unsigned int n, int *count, int base, char specifier)
 	while (i > 0)
 	{
 		i--;
-		write(1, &buff[i], 1);
-		(*count)++;
+		buffer_insert(buff[i], count, buffer, j);
 	}
 }

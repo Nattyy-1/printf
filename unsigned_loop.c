@@ -5,10 +5,12 @@
  * @c: format specifier
  * @args: the argument list containing what is to be printed
  * @count: keeps track of the number of chars printed so far
+ * @buffer: holds the character to be printed to minimize write call
+ * @j: tracks the fullness of the buffer
  *
  * Return: returns a flag 1 if a matching specifier was found else 0
  */
-int unsigned_loop(char c, va_list *args, int *count)
+int unsigned_loop(char c, va_list *args, int *count, char *buffer, int *j)
 {
 	spec_handler_t u_handlers[] = {
 		{unsigned_handler, 10, 'u'},
@@ -25,7 +27,8 @@ int unsigned_loop(char c, va_list *args, int *count)
 		if (u_handlers[i].spec == c)
 		{
 			u_handlers[i].func(va_arg(*args, unsigned int),
-			count, u_handlers[i].base, u_handlers[i].spec);
+			count, u_handlers[i].base, u_handlers[i].spec,
+			buffer, j);
 			return (1);
 		}
 	}
