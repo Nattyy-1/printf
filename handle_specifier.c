@@ -1,5 +1,3 @@
-#include <unistd.h>
-#include <string.h>
 #include "main.h"
 
 /**
@@ -35,19 +33,19 @@ void handle_specifier(char c, va_list *args, int *count)
 		di_handler(va_arg(*args, int), count);
 	} else if (c == 'b')
 	{
-		b_handler(va_arg(*args, unsigned int), count);
+		unsigned_handler(va_arg(*args, unsigned int), count, 2, 'b');
 	} else if (c == 'u')
 	{
-		u_handler(va_arg(*args, unsigned int), count);
+		unsigned_handler(va_arg(*args, unsigned int), count, 10, 'u');
 	} else if (c == 'o')
 	{
-		o_handler(va_arg(*args, unsigned int), count);
+		unsigned_handler(va_arg(*args, unsigned int), count, 8, 'o');
 	} else if (c == 'x')
 	{
-		x_handler(va_arg(*args, unsigned int), count);
+		unsigned_handler(va_arg(*args, unsigned int), count, 16, 'x');
 	} else if (c == 'X')
 	{
-		X_handler(va_arg(*args, unsigned int), count);
+		unsigned_handler(va_arg(*args, unsigned int), count, 16, 'X');
 	} else
 	{
 		write(1, "%", 1);
