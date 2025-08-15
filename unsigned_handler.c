@@ -26,18 +26,16 @@ void unsigned_handler(unsigned int n, int *count, int base, char specifier,
 	while (n > 0)
 	{
 		if (specifier == 'x')
-			buff[i] = lookup_x[n % base];
+			buff[i++] = lookup_x[n % base];
 		else if (specifier == 'X')
-			buff[i] = lookup_X[n % base];
+			buff[i++] = lookup_X[n % base];
 		else
-			buff[i] = lookup_x[n % base];
+			buff[i++] = lookup_x[n % base];
 		n /= base;
-		i++;
 	}
 
 	while (i > 0)
 	{
-		i--;
-		buffer_insert(buff[i], count, buffer, j);
+		buffer_insert(buff[--i], count, buffer, j);
 	}
 }

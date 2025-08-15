@@ -36,7 +36,7 @@ void sS_handler(char *s, int *count, char *buffer, int *j, char specifier)
 			} else
 			{
 				buffer_insert(*s, count, buffer, j);
-				s++;	
+				s++;
 			}
 		}
 	}

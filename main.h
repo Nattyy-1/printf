@@ -32,5 +32,6 @@ void percent_handler(int *count, char *buffer, int *j);
 void sS_handler(char *s, int *count, char *buffer, int *j, char specifier);
 int unsigned_loop(char c, va_list *args, int *count, char *buffer, int *j);
 void flush_full_buff(char *buffer, int *j);
+void p_handler(void *ptr, int *count, char *buffer, int *j);
 
 #endif

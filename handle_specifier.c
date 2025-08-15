@@ -31,6 +31,10 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j)
 	{
 		di_handler(va_arg(*args, int), count, buffer, j);
 		return;
+	} else if (c == 'p')
+	{
+		p_handler(va_arg(*args, void *), count, buffer, j);
+		return;
 	}
 
 	if (!(unsigned_loop(c, args, count, buffer, j)))
