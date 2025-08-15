@@ -21,7 +21,11 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j)
 		return;
 	} else if (c == 's')
 	{
-		s_handler(va_arg(*args, char *), count, buffer, j);
+		sS_handler(va_arg(*args, char *), count, buffer, j, 's');
+		return;
+	} else if (c == 'S')
+	{
+		sS_handler(va_arg(*args, char *), count, buffer, j, 'S');
 		return;
 	} else if (c == 'd' || c == 'i')
 	{

@@ -29,7 +29,7 @@ void unsigned_handler(unsigned int n, int *count, int base, char specifier,
 		      char *buffer, int *j);
 void buffer_insert(char c, int *count, char *buffer, int *j);
 void percent_handler(int *count, char *buffer, int *j);
-void s_handler(char *s, int *count, char *buffer, int *j);
+void sS_handler(char *s, int *count, char *buffer, int *j, char specifier);
 int unsigned_loop(char c, va_list *args, int *count, char *buffer, int *j);
 void flush_full_buff(char *buffer, int *j);
 
