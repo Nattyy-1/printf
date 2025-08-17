@@ -8,8 +8,10 @@
  * @count: keeps track of the printed characters so far
  * @buffer: the buffer to hold the characters being printed
  * @j: tracks the fullness of the buffer
+ * @flags: holds the flags that apply to a specific specifier
  */
-void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j)
+void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j,
+		      format_flags_t *flags)
 {
 	if (c == 'c')
 	{
@@ -29,7 +31,7 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j)
 		return;
 	} else if (c == 'd' || c == 'i')
 	{
-		di_handler(va_arg(*args, int), count, buffer, j);
+		di_handler(va_arg(*args, int), count, buffer, j, flags);
 		return;
 	} else if (c == 'p')
 	{
@@ -37,7 +39,7 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j)
 		return;
 	}
 
-	if (!(unsigned_loop(c, args, count, buffer, j)))
+	if (!(unsigned_loop(c, args, count, buffer, j, flags)))
 	{
 		buffer_insert('%', count, buffer, j);
 		buffer_insert(c, count, buffer, j);

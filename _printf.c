@@ -13,6 +13,7 @@ int _printf(const char *format, ...)
 	int count = 0;
 	va_list args;
 	char buffer[BUFFER_SIZE];
+	format_flags_t flags;
 
 	if (format == NULL)
 		return (-1);
@@ -23,21 +24,20 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			buffer_insert(format[i], &count, buffer, &j);
-			i++;
+			buffer_insert(format[i++], &count, buffer, &j);
 			continue;
-		} else
-		{
-			if (format[i + 1] == '\0')
-			{
-				write(1, buffer, j);
-				va_end(args);
-				return (-1);
-			}
-
-			handle_specifier(format[i + 1], &args, &count, buffer, &j);
-			i += 2;
 		}
+		i++;
+
+		check_flag(format, &i, &flags);
+
+		if (format[i] == '\0')
+		{
+			write(1, buffer, j);
+			va_end(args);
+			return (-1);
+		}
+		handle_specifier(format[i++], &args, &count, buffer, &j, &flags);
 	}
 
 	write(1, buffer, j);
