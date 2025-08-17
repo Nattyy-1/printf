@@ -18,14 +18,14 @@ void unsigned_handler(va_list *args, int *count, int base, char specifier,
 	unsigned long int n;
 
 	if (len_mods->h)
-		n = (unsigned short)va_arg(*args, unsigned int);
+		n = (unsigned short)va_arg(*args, int);
 	else if (len_mods->l)
 		n = va_arg(*args, unsigned long);
 	else
 		n = va_arg(*args, unsigned int);
 
 
-	if (flags && base == 16 &&  flags->hash)
+	if (flags && base == 16 &&  flags->hash && n != 0)
 	{
 		buffer_insert('0', count, buffer, j);
 		buffer_insert(specifier == 'x' ? 'x' : 'X', count, buffer, j);
