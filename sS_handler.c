@@ -31,7 +31,7 @@ void sS_handler(char *s, int *count, char *buffer, int *j, char specifier)
 				n = (unsigned int)(*s);
 				if (n <= 15)
 					buffer_insert('0', count, buffer, j);
-				unsigned_handler(n, count, 16, 'X', buffer, j, NULL);
+				print_number_base(n, 16, 'X', count, buffer, j);
 				s++;
 			} else
 			{

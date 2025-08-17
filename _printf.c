@@ -14,6 +14,7 @@ int _printf(const char *format, ...)
 	va_list args;
 	char buffer[BUFFER_SIZE];
 	format_flags_t flags;
+	len_specs len_mods;
 
 	if (format == NULL)
 		return (-1);
@@ -30,6 +31,7 @@ int _printf(const char *format, ...)
 		i++;
 
 		check_flag(format, &i, &flags);
+		check_length_modifier(format, &i, &len_mods);
 
 		if (format[i] == '\0')
 		{
@@ -37,7 +39,8 @@ int _printf(const char *format, ...)
 			va_end(args);
 			return (-1);
 		}
-		handle_specifier(format[i++], &args, &count, buffer, &j, &flags);
+		handle_specifier(format[i++], &args, &count, buffer, &j, &flags
+				 , &len_mods);
 	}
 
 	write(1, buffer, j);

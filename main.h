@@ -9,6 +9,17 @@
 #include <stddef.h>
 
 /**
+ * struct length_specifiers - holds the different length modifiers
+ * @l: checks for the length specifier l
+ * @h: checks for the length specifier h
+ */
+typedef struct length_specifiers
+{
+	int l;
+	int h;
+} len_specs;
+
+/**
  * struct format_flags - holds different flags that appear in the format str
  * @plus: checks if a + flag was detected
  * @space: checks if a space flag was detected
@@ -34,26 +45,30 @@ typedef struct format_flags
  */
 typedef struct spec_handler
 {
-	void (*func)(unsigned int, int *, int, char, char *, int *,
-		     format_flags_t *);
+	void (*func)(va_list *args, int *, int, char, char *, int *,
+		     format_flags_t *, len_specs *);
 	int base;
 	char spec;
 } spec_handler_t;
 
 int _printf(const char *format, ...);
 void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j,
-		      format_flags_t *flags);
-void di_handler(int n, int *count, char *buffer, int *j,
-		format_flags_t *flags);
-void unsigned_handler(unsigned int n, int *count, int base, char specifier,
-		      char *buffer, int *j, format_flags_t *flags);
+		      format_flags_t *flags, len_specs *len_mods);
+void di_handler(va_list *args, int *count, char *buffer, int *j,
+		format_flags_t *flags, len_specs *len_mods);
+void unsigned_handler(va_list *args, int *count, int base, char specifier,
+		      char *buffer, int *j, format_flags_t *flags,
+		      len_specs *len_mods);
 void buffer_insert(char c, int *count, char *buffer, int *j);
 void percent_handler(int *count, char *buffer, int *j);
 void sS_handler(char *s, int *count, char *buffer, int *j, char specifier);
 int unsigned_loop(char c, va_list *args, int *count, char *buffer, int *j,
-		  format_flags_t *flags);
+		  format_flags_t *flags, len_specs *len_mods);
 void flush_full_buff(char *buffer, int *j);
 void p_handler(void *ptr, int *count, char *buffer, int *j);
 void check_flag(const char *format, int *i, format_flags_t *flags);
+void print_number_base(unsigned long n, int base, char specifier, int *count,
+		char *buffer, int *j);
+void check_length_modifier(const char *format, int *i, len_specs *len_mods);
 
 #endif

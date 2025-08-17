@@ -3,19 +3,27 @@
 /**
  * di_handler - handles the format specifiers d and i to store ints in a buffer
  *		and to print it once full
- * @n: the number to be stored
+ * @args: the argument list where the number will be extracted from
  * @count: the number of characters printed to standard output
  * @buffer: used to holds the characters to minimize write call
  * @j: keeps track of how full the buffer is
  * @flags: keeps the active flags that apply to specifiers
+ * @len_mods: holds the active length modifiers
  */
-void di_handler(int n, int *count, char *buffer, int *j, format_flags_t *flags)
+void di_handler(va_list *args, int *count, char *buffer, int *j,
+		format_flags_t *flags, len_specs *len_mods)
 {
 	char c;
 	int divisor = 1;
-	unsigned int temp;
-	unsigned int num;
+	long int n;
+	unsigned long num, temp;
 
+	if (len_mods->h)
+		n = (short)va_arg(*args, int);
+	else if (len_mods->l)
+		n = va_arg(*args, long int);
+	else
+		n = va_arg(*args, int);
 	if (n >= 0)
 	{
 		if (flags->plus)
@@ -28,7 +36,7 @@ void di_handler(int n, int *count, char *buffer, int *j, format_flags_t *flags)
 	{
 		buffer_insert('-', count, buffer, j);
 	}
-	num = (n < 0) ? -((unsigned int)n) : (unsigned int)n;
+	num = (n < 0) ? -((unsigned long)n) : (unsigned long)n;
 
 	temp = num;
 	while (temp >= 10)

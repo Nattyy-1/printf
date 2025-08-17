@@ -9,9 +9,10 @@
  * @buffer: the buffer to hold the characters being printed
  * @j: tracks the fullness of the buffer
  * @flags: holds the flags that apply to a specific specifier
+ * @len_mods: holds the length modifiers
  */
 void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j,
-		      format_flags_t *flags)
+		      format_flags_t *flags, len_specs *len_mods)
 {
 	if (c == 'c')
 	{
@@ -31,7 +32,8 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j,
 		return;
 	} else if (c == 'd' || c == 'i')
 	{
-		di_handler(va_arg(*args, int), count, buffer, j, flags);
+		di_handler(args, count, buffer, j, flags
+			   , len_mods);
 		return;
 	} else if (c == 'p')
 	{
@@ -39,7 +41,7 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j,
 		return;
 	}
 
-	if (!(unsigned_loop(c, args, count, buffer, j, flags)))
+	if (!(unsigned_loop(c, args, count, buffer, j, flags, len_mods)))
 	{
 		buffer_insert('%', count, buffer, j);
 		buffer_insert(c, count, buffer, j);
