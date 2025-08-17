@@ -18,7 +18,7 @@ void unsigned_handler(va_list *args, int *count, int base, char specifier,
 	unsigned long int n;
 
 	if (len_mods->h)
-		n = (unsigned short)va_arg(*args, int);
+		n = (unsigned short)va_arg(*args, unsigned int);
 	else if (len_mods->l)
 		n = va_arg(*args, unsigned long);
 	else
