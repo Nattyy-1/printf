@@ -6,18 +6,18 @@
  *
  * Return: the number of digits in the number
  */
-int num_digits(long int n)
+int num_digits(long n)
 {
-	unsigned long long u;
+	unsigned long u;
 	int count = 0;
 
 	if (n == 0)
 		return (1);
 
 	if (n < 0)
-		u = (unsigned long long)(-(long long)n);
+		u = (unsigned long)(-n);
 	else
-		u = (unsigned long long)n;
+		u = (unsigned long)n;
 
 	while (u > 0)
 	{
@@ -27,3 +27,4 @@ int num_digits(long int n)
 
 	return (count);
 }
+
