@@ -16,19 +16,19 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j,
 {
 	if (c == 'c')
 	{
-		buffer_insert((char)va_arg(*args, int), count, buffer, j);
+		c_handler((char)va_arg(*args, int), count, buffer, j, flags);
 		return;
 	} else if (c == '%')
 	{
-		percent_handler(count, buffer, j);
+		c_handler('%', count, buffer, j, flags);
 		return;
 	} else if (c == 's')
 	{
-		sS_handler(va_arg(*args, char *), count, buffer, j, 's');
+		sS_handler(va_arg(*args, char *), count, buffer, j, 's', flags);
 		return;
 	} else if (c == 'S')
 	{
-		sS_handler(va_arg(*args, char *), count, buffer, j, 'S');
+		sS_handler(va_arg(*args, char *), count, buffer, j, 'S', flags);
 		return;
 	} else if (c == 'd' || c == 'i')
 	{
@@ -37,7 +37,7 @@ void handle_specifier(char c, va_list *args, int *count, char *buffer, int *j,
 		return;
 	} else if (c == 'p')
 	{
-		p_handler(va_arg(*args, void *), count, buffer, j);
+		p_handler(va_arg(*args, void *), count, buffer, j, flags);
 		return;
 	}
 

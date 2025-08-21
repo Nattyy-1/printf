@@ -13,10 +13,9 @@
 void di_handler(va_list *args, int *count, char *buffer, int *j,
 		format_flags_t *flags, len_specs *len_mods)
 {
-	char c;
-	int divisor = 1;
 	long int n;
-	unsigned long num, temp;
+	unsigned long num;
+	int padding;
 
 	if (len_mods->h)
 		n = (short)va_arg(*args, int);
@@ -24,33 +23,23 @@ void di_handler(va_list *args, int *count, char *buffer, int *j,
 		n = va_arg(*args, long int);
 	else
 		n = va_arg(*args, int);
-	if (n >= 0)
-	{
-		if (flags->plus)
-			buffer_insert('+', count, buffer, j);
-		else if (flags->space)
-			buffer_insert(' ', count, buffer, j);
-	}
+	padding = flags->field_width - num_digits(n);
 
-	if (n < 0)
-	{
-		buffer_insert('-', count, buffer, j);
-	}
-	num = (n < 0) ? -((unsigned long)n) : (unsigned long)n;
+	if (n < 0 || flags->plus || flags->space)
+		padding -= 1;
 
-	temp = num;
-	while (temp >= 10)
-	{
-		divisor *= 10;
-		temp /= 10;
-	}
+	if (padding < 0)
+		padding = 0;
 
-	temp = num;
-	while (divisor >= 1)
+	if (flags->minus)
 	{
-		c = temp / divisor + '0';
-		buffer_insert(c, count, buffer, j);
-		temp %= divisor;
-		divisor /= 10;
+		num = di_helper(n, flags, count, buffer, j);
+		print_number_base(num, 10, 'd', count, buffer, j);
+		insert_padding(&padding, count, buffer, j);
+	} else
+	{
+		insert_padding(&padding, count, buffer, j);
+		num = di_helper(n, flags, count, buffer, j);
+		print_number_base(num, 10, 'd', count, buffer, j);
 	}
 }

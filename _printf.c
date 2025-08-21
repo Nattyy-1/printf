@@ -31,6 +31,7 @@ int _printf(const char *format, ...)
 		i++;
 
 		check_flag(format, &i, &flags);
+		check_field_width(format, &i, &flags);
 		check_length_modifier(format, &i, &len_mods);
 
 		if (format[i] == '\0')

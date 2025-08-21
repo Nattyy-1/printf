@@ -26,6 +26,7 @@ typedef struct length_specifiers
  * @hash: checks if a hash flag was detected
  * @zero: checks if a 0 flag was detected
  * @minus: checks if a minus flag was detected
+ * @field_width: keeps track of the field width required
  */
 typedef struct format_flags
 {
@@ -34,6 +35,7 @@ typedef struct format_flags
 	int hash;
 	int zero;
 	int minus;
+	int field_width;
 } format_flags_t;
 
 /**
@@ -60,15 +62,30 @@ void unsigned_handler(va_list *args, int *count, int base, char specifier,
 		      char *buffer, int *j, format_flags_t *flags,
 		      len_specs *len_mods);
 void buffer_insert(char c, int *count, char *buffer, int *j);
-void percent_handler(int *count, char *buffer, int *j);
-void sS_handler(char *s, int *count, char *buffer, int *j, char specifier);
+void sS_handler(char *s, int *count, char *buffer, int *j, char specifier,
+		format_flags_t *flags);
 int unsigned_loop(char c, va_list *args, int *count, char *buffer, int *j,
 		  format_flags_t *flags, len_specs *len_mods);
 void flush_full_buff(char *buffer, int *j);
-void p_handler(void *ptr, int *count, char *buffer, int *j);
+void p_handler(void *ptr, int *count, char *buffer, int *j,
+	       format_flags_t *flags);
 void check_flag(const char *format, int *i, format_flags_t *flags);
 void print_number_base(unsigned long n, int base, char specifier, int *count,
 		char *buffer, int *j);
 void check_length_modifier(const char *format, int *i, len_specs *len_mods);
-
+void check_field_width(const char *buffer, int *i, format_flags_t *flags);
+void c_handler(char c, int *count, char *buffer, int *j,
+	       format_flags_t *flags);
+void insert_padding(int *padding, int *count, char *buffer, int *j);
+void print_string(char *string, char specifier, int *count, char *buffer,
+		  int *j);
+unsigned long di_helper(long int n, format_flags_t *flags, int *count,
+			char *buffer, int *j);
+int num_digits(long int n);
+void print_nil(format_flags_t *flags, int *padding, int *count, char *buffer,
+	       int *j);
+int unsigned_num_digits(unsigned long n, int base);
+void handle_hash_padding(format_flags_t *flags, unsigned long n, int base,
+			 char specifier, int *padding, int *count, char *buffer,
+			 int *j);
 #endif

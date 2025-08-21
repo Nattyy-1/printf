@@ -7,37 +7,29 @@
  * @buffer: used to hold characters to minimize write call
  * @j: keeps track of the size of the buffer
  * @specifier: chooses between either s or S
+ * @flags: keeps track of the active flags
  */
-void sS_handler(char *s, int *count, char *buffer, int *j, char specifier)
+void sS_handler(char *s, int *count, char *buffer, int *j, char specifier,
+		format_flags_t *flags)
 {
-	unsigned int n;
+	int padding;
 
 	if (s == NULL)
 	{
 		s = "(null)";
 	}
-	while (*s != '\0')
+
+	padding = flags->field_width - strlen(s);
+	if (padding < 0)
+		padding = 0;
+
+	if (flags->minus)
 	{
-		if (specifier == 's')
-		{
-			buffer_insert(*s, count, buffer, j);
-			s++;
-		} else if (specifier == 'S')
-		{
-			if ((*s > 0 && *s < 32) || *s >= 127)
-			{
-				buffer_insert('\\', count, buffer, j);
-				buffer_insert('x', count, buffer, j);
-				n = (unsigned int)(*s);
-				if (n <= 15)
-					buffer_insert('0', count, buffer, j);
-				print_number_base(n, 16, 'X', count, buffer, j);
-				s++;
-			} else
-			{
-				buffer_insert(*s, count, buffer, j);
-				s++;
-			}
-		}
+		print_string(s, specifier, count, buffer, j);
+		insert_padding(&padding, count, buffer, j);
+	} else
+	{
+		insert_padding(&padding, count, buffer, j);
+		print_string(s, specifier, count, buffer, j);
 	}
 }

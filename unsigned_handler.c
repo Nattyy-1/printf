@@ -12,10 +12,11 @@
  * @len_mods: holds the active length specifiers
  */
 void unsigned_handler(va_list *args, int *count, int base, char specifier,
-		      char *buffer, int *j, format_flags_t *flags
-		      , len_specs *len_mods)
+					  char *buffer, int *j, format_flags_t *flags
+					  , len_specs *len_mods)
 {
 	unsigned long int n;
+	int padding;
 
 	if (len_mods->h)
 		n = (unsigned short)va_arg(*args, int);
@@ -24,18 +25,23 @@ void unsigned_handler(va_list *args, int *count, int base, char specifier,
 	else
 		n = va_arg(*args, unsigned int);
 
+	padding = flags->field_width - unsigned_num_digits(n, base);
 
-	if (flags && base == 16 &&  flags->hash && n != 0)
+	if ((base == 16 && flags->hash) || (base == 8 && flags->hash))
 	{
-		buffer_insert('0', count, buffer, j);
-		buffer_insert(specifier == 'x' ? 'x' : 'X', count, buffer, j);
+		handle_hash_padding(flags, n, base, specifier, &padding, count, buffer, j);
+		return;
 	}
 
-
-	if (flags && base == 8 && flags->hash && n != 0)
+	if (flags && flags->minus)
 	{
-		buffer_insert('0', count, buffer, j);
+		print_number_base(n, base, specifier, count, buffer, j);
+		insert_padding(&padding, count, buffer, j);
 	}
-
-	print_number_base(n, base, specifier, count, buffer, j);
+	else
+	{
+		insert_padding(&padding, count, buffer, j);
+		print_number_base(n, base, specifier, count, buffer, j);
+	}
 }
+
