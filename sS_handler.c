@@ -26,10 +26,10 @@ void sS_handler(char *s, int *count, char *buffer, int *j, char specifier,
 	if (flags->minus)
 	{
 		print_string(s, specifier, count, buffer, j);
-		insert_padding(&padding, count, buffer, j, flags);
+		insert_padding(&padding, count, buffer, j, flags, '0');
 	} else
 	{
-		insert_padding(&padding, count, buffer, j, flags);
+		insert_padding(&padding, count, buffer, j, flags, '0');
 		print_string(s, specifier, count, buffer, j);
 	}
 }

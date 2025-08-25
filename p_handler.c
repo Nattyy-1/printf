@@ -41,7 +41,7 @@ void p_handler(void *ptr, int *count, char *buffer, int *j,
 		padding = 0;
 
 	if (!flags->minus)
-		insert_padding(&padding, count, buffer, j, flags);
+		insert_padding(&padding, count, buffer, j, flags, '0');
 
 	buffer_insert('0', count, buffer, j);
 	buffer_insert('x', count, buffer, j);
@@ -50,5 +50,5 @@ void p_handler(void *ptr, int *count, char *buffer, int *j,
 		buffer_insert(buff[--i], count, buffer, j);
 
 	if (flags->minus)
-		insert_padding(&padding, count, buffer, j, flags);
+		insert_padding(&padding, count, buffer, j, flags, '0');
 }

@@ -20,11 +20,11 @@ void print_nil(format_flags_t *flags, int *padding, int *count, char *buffer,
 		*padding = 0;
 
 	if (!flags->minus)
-		insert_padding(padding, count, buffer, j, flags);
+		insert_padding(padding, count, buffer, j, flags, '0');
 
 	while (s[i] != '\0')
 		buffer_insert(s[i++], count, buffer, j);
 
 	if (flags->minus)
-		insert_padding(padding, count, buffer, j, flags);
+		insert_padding(padding, count, buffer, j, flags, '0');
 }

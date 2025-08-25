@@ -30,7 +30,6 @@ void di_handler(va_list *args, int *count, char *buffer, int *j,
 	if (padding < 0)
 		padding = 0;
 
-	/* zero-padding active (ignored if minus): print sign first via di_helper */
 	if (!flags->minus && flags->zero)
 	{
 		num = di_helper(n, flags, count, buffer, j);
@@ -44,11 +43,11 @@ void di_handler(va_list *args, int *count, char *buffer, int *j,
 	{
 		num = di_helper(n, flags, count, buffer, j);
 		print_number_base(num, 10, 'd', count, buffer, j);
-		insert_padding(&padding, count, buffer, j, flags);
+		insert_padding(&padding, count, buffer, j, flags, '1');
 	}
 	else
 	{
-		insert_padding(&padding, count, buffer, j, flags);
+		insert_padding(&padding, count, buffer, j, flags, '1');
 		num = di_helper(n, flags, count, buffer, j);
 		print_number_base(num, 10, 'd', count, buffer, j);
 	}
