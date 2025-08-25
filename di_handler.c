@@ -16,6 +16,7 @@ void di_handler(va_list *args, int *count, char *buffer, int *j,
 	long int n;
 	unsigned long num;
 	int padding;
+	int sign;
 
 	if (len_mods->h)
 		n = (short)va_arg(*args, int);
@@ -23,10 +24,8 @@ void di_handler(va_list *args, int *count, char *buffer, int *j,
 		n = va_arg(*args, long int);
 	else
 		n = va_arg(*args, int);
-
-	padding = flags->field_width - num_digits(n);
-	if (n < 0 || flags->plus || flags->space)
-		padding -= 1;
+	sign = (n < 0 || flags->plus || flags->space) ? 1 : 0;
+	padding = flags->field_width - num_digits(n) - sign;
 	if (padding < 0)
 		padding = 0;
 
