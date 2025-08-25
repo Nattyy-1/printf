@@ -18,10 +18,10 @@ void c_handler(char c, int *count, char *buffer, int *j, format_flags_t *flags)
 	if (flags->minus)
 	{
 		buffer_insert(c, count, buffer, j);
-		insert_padding(&padding, count, buffer, j);
+		insert_padding(&padding, count, buffer, j, flags);
 	} else
 	{
-		insert_padding(&padding, count, buffer, j);
+		insert_padding(&padding, count, buffer, j, flags);
 		buffer_insert(c, count, buffer, j);
 	}
 }

@@ -36,11 +36,11 @@ void unsigned_handler(va_list *args, int *count, int base, char specifier,
 	if (flags && flags->minus)
 	{
 		print_number_base(n, base, specifier, count, buffer, j);
-		insert_padding(&padding, count, buffer, j);
+		insert_padding(&padding, count, buffer, j, flags);
 	}
 	else
 	{
-		insert_padding(&padding, count, buffer, j);
+		insert_padding(&padding, count, buffer, j, flags);
 		print_number_base(n, base, specifier, count, buffer, j);
 	}
 }

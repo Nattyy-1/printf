@@ -76,7 +76,8 @@ void check_length_modifier(const char *format, int *i, len_specs *len_mods);
 void check_field_width(const char *buffer, int *i, format_flags_t *flags);
 void c_handler(char c, int *count, char *buffer, int *j,
 	       format_flags_t *flags);
-void insert_padding(int *padding, int *count, char *buffer, int *j);
+void insert_padding(int *padding, int *count, char *buffer, int *j,
+		    format_flags_t *flags);
 void print_string(char *string, char specifier, int *count, char *buffer,
 		  int *j);
 unsigned long di_helper(long int n, format_flags_t *flags, int *count,

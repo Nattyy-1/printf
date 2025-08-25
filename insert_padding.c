@@ -6,12 +6,16 @@
  * @count: keeps track of the chars printed so far
  * @buffer: keeps chars in a buffer
  * @j: keeps track of the fullness of the buffer
+ * @flags: holds the active format flags
  */
-void insert_padding(int *padding, int *count, char *buffer, int *j)
+void insert_padding(int *padding, int *count, char *buffer, int *j,
+		    format_flags_t *flags)
 {
+	char pad_char = (flags->zero && !flags->minus) ? '0' : ' ';
+
 	while (*padding > 0)
 	{
-		buffer_insert(' ', count, buffer, j);
+		buffer_insert(pad_char, count, buffer, j);
 		(*padding)--;
 	}
 }

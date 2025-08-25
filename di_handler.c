@@ -2,7 +2,7 @@
 
 /**
  * di_handler - handles the format specifiers d and i to store ints in a buffer
- *		and to print it once full
+ *              and to print it once full
  * @args: the argument list where the number will be extracted from
  * @count: the number of characters printed to standard output
  * @buffer: used to holds the characters to minimize write call
@@ -23,22 +23,32 @@ void di_handler(va_list *args, int *count, char *buffer, int *j,
 		n = va_arg(*args, long int);
 	else
 		n = va_arg(*args, int);
-	padding = flags->field_width - num_digits(n);
 
+	padding = flags->field_width - num_digits(n);
 	if (n < 0 || flags->plus || flags->space)
 		padding -= 1;
-
 	if (padding < 0)
 		padding = 0;
+
+	/* zero-padding active (ignored if minus): print sign first via di_helper */
+	if (!flags->minus && flags->zero)
+	{
+		num = di_helper(n, flags, count, buffer, j);
+		while (padding-- > 0)
+			buffer_insert('0', count, buffer, j);
+		print_number_base(num, 10, 'd', count, buffer, j);
+		return;
+	}
 
 	if (flags->minus)
 	{
 		num = di_helper(n, flags, count, buffer, j);
 		print_number_base(num, 10, 'd', count, buffer, j);
-		insert_padding(&padding, count, buffer, j);
-	} else
+		insert_padding(&padding, count, buffer, j, flags);
+	}
+	else
 	{
-		insert_padding(&padding, count, buffer, j);
+		insert_padding(&padding, count, buffer, j, flags);
 		num = di_helper(n, flags, count, buffer, j);
 		print_number_base(num, 10, 'd', count, buffer, j);
 	}
