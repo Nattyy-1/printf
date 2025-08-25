@@ -14,8 +14,9 @@ int num_digits(long n)
 	if (n == 0)
 		return (1);
 
+	/* Safe magnitude conversion without signed overflow */
 	if (n < 0)
-		u = (unsigned long)(-n);
+		u = (unsigned long)(~n) + 1UL;
 	else
 		u = (unsigned long)n;
 
@@ -27,4 +28,3 @@ int num_digits(long n)
 
 	return (count);
 }
-

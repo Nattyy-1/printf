@@ -26,7 +26,7 @@ unsigned long di_helper(long n, format_flags_t *flags, int *count,
 		buffer_insert('-', count, buffer, j);
 
 	if (n < 0)
-		u = (unsigned long)(-n);
+		u = (unsigned long)(~n) + 1UL;
 	else
 		u = (unsigned long)n;
 

@@ -12,38 +12,46 @@
  * @j: buffer fullness index
  */
 void handle_hash_padding(format_flags_t *flags, unsigned long n, int base,
-		char specifier, int *padding, int *count, char *buffer, int *j)
+	char specifier, int *padding, int *count, char *buffer, int *j)
 {
-	if (base == 16 && flags->hash && n != 0)
+	if (base == 16 && flags->hash)
 	{
-		*padding -= 2;
+		*padding -= (n != 0) ? 2 : 0;
 		if (flags->minus)
+		{
+			if (n != 0)
+			{
+				buffer_insert('0', count, buffer, j);
+				buffer_insert(specifier == 'x' ? 'x' : 'X', count, buffer, j);
+			}
+			print_number_base(n, base, specifier, count, buffer, j);
+			insert_padding(padding, count, buffer, j);
+			return;
+		}
+		insert_padding(padding, count, buffer, j);
+		if (n != 0)
 		{
 			buffer_insert('0', count, buffer, j);
 			buffer_insert(specifier == 'x' ? 'x' : 'X', count, buffer, j);
-			print_number_base(n, base, specifier, count, buffer, j);
-			insert_padding(padding, count, buffer, j);
-			return;
 		}
-		insert_padding(padding, count, buffer, j);
-		buffer_insert('0', count, buffer, j);
-		buffer_insert(specifier == 'x' ? 'x' : 'X', count, buffer, j);
 		print_number_base(n, base, specifier, count, buffer, j);
 		return;
 	}
-
-	if (base == 8 && flags->hash && n != 0)
+	if (base == 8 && flags->hash)
 	{
-		*padding -= 1;
+		if (n != 0)
+			(*padding)--;
 		if (flags->minus)
 		{
-			buffer_insert('0', count, buffer, j);
+			if (n != 0)
+				buffer_insert('0', count, buffer, j);
 			print_number_base(n, base, specifier, count, buffer, j);
 			insert_padding(padding, count, buffer, j);
 			return;
 		}
 		insert_padding(padding, count, buffer, j);
-		buffer_insert('0', count, buffer, j);
+		if (n != 0)
+			buffer_insert('0', count, buffer, j);
 		print_number_base(n, base, specifier, count, buffer, j);
 	}
 }
